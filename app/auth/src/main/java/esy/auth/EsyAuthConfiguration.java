@@ -36,6 +36,12 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
 
+/**
+ * @see <a href="https://www.codeburps.com/post/spring-boot-oauth2-for-server-to-server-security">Securing Server-to-Server Communication with Spring Boot & OAuth2</a>
+ * @see <a href="https://docs.spring.io/spring-authorization-server/docs/current/reference/html/getting-started.html">Spring Authorization Server</a>
+ * @see <a href="https://github.com/spring-projects/spring-authorization-server">spring-projects/spring-authorization-server</a>
+ * @see <a href="https://www.baeldung.com/spring-security-oauth-auth-server">Spring Security OAuth Authorization Server</a>
+ */
 @Configuration
 @EnableWebSecurity
 public class EsyAuthConfiguration {
