@@ -1,0 +1,28 @@
+// https://docs.gradle.org/
+// https://docs.gradle.org/current/userguide/plugins.html
+// https://docs.gradle.org/current/userguide/platforms.html
+// https://tomgregory.com/gradle-project-properties-best-practices/
+
+// tag::pluginManagement[]
+pluginManagement {
+    plugins {
+        id 'io.spring.dependency-management' version '1.1.0'
+        id 'org.springframework.boot' version '3.1.1'
+        id 'com.google.cloud.tools.jib' version '3.3.2'
+        id 'com.diffplug.spotless' version '6.19.0'
+        id 'com.palantir.git-version' version '3.0.0'
+    }
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+        maven {
+            url "https://dl.bintray.com/gradle/gradle-plugins"
+        }
+    }
+}
+// end::pluginManagement[]
+
+// tag::projectConfiguration[]
+include 'app:auth'
+include 'app:demo'
+// end::projectConfiguration[]

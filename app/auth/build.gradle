@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+    id 'io.spring.dependency-management'
+    id 'org.springframework.boot'
+}
+
+dependencies {
+    // https://projectlombok.org
+    compileOnly('org.projectlombok:lombok')
+    annotationProcessor('org.projectlombok:lombok')
+    // https://spring.io/projects/spring-boot
+    implementation('org.springframework.boot:spring-boot-starter')
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation('org.springframework.boot:spring-boot-starter-security')
+    implementation('org.springframework.boot:spring-boot-starter-oauth2-authorization-server')
+    implementation('org.springframework.boot:spring-boot-starter-actuator')
+    implementation('io.micrometer:micrometer-registry-prometheus')
+}
+dependencies {
+    // https://projectlombok.org
+    testImplementation('org.projectlombok:lombok')
+    // https://spring.io/projects/spring-boot
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    // https://spring.io/projects/spring-security
+    testImplementation('org.springframework.security:spring-security-test')
+    // https://junit.org/junit5
+    testImplementation('org.junit.jupiter:junit-jupiter')
+    // https://site.mockito.org/
+    testImplementation('org.mockito:mockito-junit-jupiter')
+}
+
+springBoot {
+    mainClass = 'esy.auth.EsyAuthRunner'
+    buildInfo {
+        properties {
+            additional = [
+                    'root': rootProject.name
+            ]
+        }
+    }
+}

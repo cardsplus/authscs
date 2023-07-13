@@ -1,0 +1,44 @@
+// https://docs.gradle.org/
+// https://tomgregory.com/gradle-project-properties-best-practices/
+
+// tag::plugins[]
+plugins {
+    id 'base'
+    id 'idea'
+}
+// end::plugins[]
+
+// tag::allprojects[]
+allprojects {
+    description = 'A self contained authentication server'
+    group = 'esy'
+    version = '0.0'
+    repositories {
+        mavenCentral()
+    }
+}
+// end::allprojects[]
+
+// tag::subprojects[]
+subprojects {
+    plugins.withType(JavaPlugin) {
+        compileJava.options.encoding = 'UTF-8'
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    tasks.withType(Test) {
+        useJUnitPlatform {
+            excludeEngines 'junit-vintage'
+        }
+        systemProperty "file.encoding", "UTF-8"
+        testLogging {
+            events "passed", "skipped", "failed"
+            exceptionFormat "full"
+            showExceptions true
+            showCauses true
+            showStackTraces true
+            showStandardStreams false
+        }
+    }
+}
+// end::subprojects[]
