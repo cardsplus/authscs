@@ -1,0 +1,41 @@
+# https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions
+# https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
+
+name: build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+    # https://github.com/actions/checkout
+    - uses: actions/checkout@v3
+
+    # https://github.com/actions/setup-java
+    # https://github.com/actions/cache
+    - uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        cache: 'gradle'
+
+    # https://github.com/gradle/gradle
+    - run: chmod +x gradlew 
+    - run: ./gradlew build --parallel
+    - run: ./gradlew dockerBuild
+
+    # https://github.com/features/packages
+    - if: ${{ github.ref == 'refs/heads/main' }}
+      name: Update Packages (nur master)
+      run: |
+        echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+        API=ghcr.io/${{ github.repository_owner }}
+        TAG=`cat VERSION`
+        AUTH=authscs/auth
+        docker tag $AUTH:$TAG $API/$AUTH:$TAG
+        docker push $API/$AUTH:$TAG
+        DEMO=authscs/demo
+        docker tag $DEMO:$TAG $API/$DEMO:$TAG
+        docker push $API/$DEMO:$TAG
