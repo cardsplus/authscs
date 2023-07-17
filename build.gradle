@@ -5,6 +5,7 @@
 plugins {
     id 'base'
     id 'idea'
+    id 'com.palantir.git-version'
 }
 // end::plugins[]
 
@@ -12,7 +13,7 @@ plugins {
 allprojects {
     description = 'A self contained authentication server'
     group = 'esy'
-    version = '0.0'
+    version = gitVersion()
     repositories {
         mavenCentral()
     }
@@ -42,3 +43,12 @@ subprojects {
     }
 }
 // end::subprojects[]
+
+ext.VERSION = new File("${rootDir}/VERSION").text
+task versionCheck() {
+    group = 'versioning'
+    build.dependsOn it
+    assert new File("${rootDir}/VERSION.md")
+        .text
+        .startsWith("# Version " + VERSION)
+}
