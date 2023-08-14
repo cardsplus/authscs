@@ -1,0 +1,41 @@
+spring:
+  main:
+    # Kein Banner wegen JSON-Logging
+    banner-mode: off
+  security:
+    oauth2:
+      client:
+        registration:
+          products-client-client-credentials:
+            provider: spring
+            client-id: products-client
+            client-secret: secret
+            authorization-grant-type: client_credentials
+            client-name: products-client-client-credentials
+            scope: products.read
+        provider:
+          spring:
+            issuer-uri: http://auth-server:7070
+server:
+  port: 7072
+
+management:
+  health:
+    binders:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: DEBUG

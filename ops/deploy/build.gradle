@@ -1,0 +1,28 @@
+plugins {
+    id 'base'
+}
+
+task dockerBuild {
+    dependsOn ':app:auth-server:dockerBuild'
+    dependsOn ':app:demo-server:dockerBuild'
+    dependsOn ':app:demo-client:dockerBuild'
+}
+
+task composeUp(type: Exec) {
+    dependsOn 'dockerBuild'
+    commandLine 'docker', 'compose', '-p', rootProject.name, '-f', 'compose.yml', 'up', \
+        '--detach', \
+        '--no-build', \
+        '--remove-orphans'
+    environment 'project', rootProject.name
+}
+
+task composeStop(type: Exec) {
+    commandLine 'docker', 'compose', '-p', rootProject.name, '-f', 'compose.yml', 'stop'
+    environment 'project', rootProject.name
+}
+
+task composeDown(type: Exec) {
+    commandLine 'docker', 'compose', '-p', rootProject.name, '-f', 'compose.yml', 'down'
+    environment 'project', rootProject.name
+}

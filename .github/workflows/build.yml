@@ -33,9 +33,12 @@ jobs:
         echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
         API=`echo "ghcr.io/${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]'`
         TAG=`cat VERSION`
-        AUTH=authscs/auth
-        docker tag $AUTH:$TAG $API/$AUTH:$TAG
-        docker push $API/$AUTH:$TAG
-        DEMO=authscs/demo
-        docker tag $DEMO:$TAG $API/$DEMO:$TAG
-        docker push $API/$DEMO:$TAG
+        NAME=authscs/auth-server
+        docker tag $NAME:$TAG $API/$NAME:$TAG
+        docker push $API/$NAME:$TAG
+        NAME=authscs/demo-server
+        docker tag $NAME:$TAG $API/$NAME:$TAG
+        docker push $API/$NAME:$TAG
+        NAME=authscs/demo-client
+        docker tag $NAME:$TAG $API/$NAME:$TAG
+        docker push $API/$NAME:$TAG

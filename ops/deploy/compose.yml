@@ -1,0 +1,28 @@
+version: '3.9'
+services:
+  auth-server:
+    image: ${project}/auth-server
+    hostname: auth-server
+    ports:
+      - 7070:7070
+    environment:
+      - SERVER_PORT=7070
+  demo-server:
+    image: ${project}/demo-server
+    hostname: demo-server
+    ports:
+      - 7071:7071
+    environment:
+      - SERVER_PORT=7071
+    depends_on:
+      - auth-server
+  demo-client:
+    image: ${project}/demo-client
+    hostname: demo-client
+    ports:
+      - 7072:7072
+    environment:
+      - SERVER_PORT=7072
+    depends_on:
+      - auth-server
+      - demo-server
