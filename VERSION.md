@@ -1,3 +1,9 @@
+# Version 0.3.0
+
+* agentlib für Debugging in `compose.yml`.
+* OAUTH2_ISSUER_URI
+* OAUTH2_SERVER_URI
+
 # Version 0.2.0
 
 * Spring Demo Client Server

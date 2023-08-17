@@ -5,6 +5,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -40,9 +41,22 @@ import java.util.UUID;
 public class EsyAuthServerConfiguration {
 
     @Bean
-    public AuthorizationServerSettings authorizationServerSettings() {
+    public RegisteredClientRepository registeredClientRepository() {
+        final var client = RegisteredClient.withId(UUID.randomUUID().toString())
+                .clientId("authscs")
+                .clientSecret("{noop}secret")
+                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+                .scope("authscs.read")
+                .scope("authscs.write")
+                .build();
+        return new InMemoryRegisteredClientRepository(client);
+    }
+
+    @Bean
+    public AuthorizationServerSettings authorizationServerSettings(@Value("${oauth2.issuer-uri}") final String issuer) {
         return AuthorizationServerSettings.builder()
-                .issuer("http://auth-server:7070")
+                .issuer(issuer)
                 .build();
     }
 
@@ -61,19 +75,6 @@ public class EsyAuthServerConfiguration {
                 .authenticated()
         );
         return http.build();
-    }
-
-    @Bean
-    public RegisteredClientRepository registeredClientRepository() {
-        final var oidcClient = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("products-client")
-                .clientSecret("{noop}secret")
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .scope("products.read")
-                .scope("products.write")
-                .build();
-        return new InMemoryRegisteredClientRepository(oidcClient);
     }
 
     @Bean

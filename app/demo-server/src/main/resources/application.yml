@@ -6,7 +6,10 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://auth-server:7070
+          issuer-uri: ${oauth2.issuer-uri}
+
+oauth2:
+  issuer-uri: http://localhost:7070
 
 server:
   port: 7071

@@ -3,6 +3,9 @@ spring:
     # Kein Banner wegen JSON-Logging
     banner-mode: off
 
+oauth2:
+  issuer-uri: http://localhost:7070
+
 server:
   port: 7070
 

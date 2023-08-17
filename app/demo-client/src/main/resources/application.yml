@@ -6,16 +6,21 @@ spring:
     oauth2:
       client:
         registration:
-          products-client-client-credentials:
+          authscs-client-credentials:
             provider: spring
-            client-id: products-client
+            client-id: authscs
             client-secret: secret
             authorization-grant-type: client_credentials
-            client-name: products-client-client-credentials
-            scope: products.read
+            client-name: authscs-client-credentials
+            scope: authscs.read
         provider:
           spring:
-            issuer-uri: http://auth-server:7070
+            issuer-uri: ${oauth2.issuer-uri}
+
+oauth2:
+  issuer-uri: http://localhost:7070
+  server-uri: http://localhost:7071/api
+
 server:
   port: 7072
 

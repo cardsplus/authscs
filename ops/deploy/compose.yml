@@ -4,25 +4,35 @@ services:
     image: ${project}/auth-server
     hostname: auth-server
     ports:
+      - 5005:5005
       - 7070:7070
     environment:
+      - _JAVA_OPTIONS=-Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
       - SERVER_PORT=7070
+      - OAUTH2_ISSUER_URI=http://auth-server:7070
   demo-server:
     image: ${project}/demo-server
     hostname: demo-server
     ports:
+      - 5006:5006
       - 7071:7071
     environment:
+      - _JAVA_OPTIONS=-Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006
       - SERVER_PORT=7071
+      - OAUTH2_ISSUER_URI=http://auth-server:7070
     depends_on:
       - auth-server
   demo-client:
     image: ${project}/demo-client
     hostname: demo-client
     ports:
+      - 5007:5007
       - 7072:7072
     environment:
+      - _JAVA_OPTIONS=-Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5007
       - SERVER_PORT=7072
+      - OAUTH2_ISSUER_URI=http://auth-server:7070
+      - OAUTH2_SERVER_URI=http://demo-server:7071/api
     depends_on:
       - auth-server
       - demo-server
